@@ -12,6 +12,45 @@ class HomeCoordinator: BaseCoordinator {
     override func start() {
         let viewController = HomeViewController()
         
-        self.navigationController.setViewControllers([viewController], animated: true)
+        let viewControllers = getViewControllers()
+        viewController.setup(with: viewControllers)
+        self.navigationController.pushViewController(viewController, animated: false)
+    }
+}
+
+private extension HomeCoordinator {
+    func getViewControllers() -> [UIViewController] {
+        
+        let tabItems = getTabItems()
+        
+        return tabItems.map { item in
+            let vc: UIViewController
+            
+            switch item {
+            case .gallery:
+                vc = getGalleryViewController()
+            case .library:
+                vc = getLibaryViewController()
+            }
+            
+            vc.tabBarItem = UITabBarItem(title: item.title, image: item.image, tag: item.rawValue)
+            return vc
+        }
+    }
+    
+    func getTabItems() -> [HomeTabItem] {
+        return HomeTabItem.allCases
+    }
+}
+
+private extension HomeCoordinator {
+    func getGalleryViewController() -> UIViewController {
+        let vc = AlbumsViewController(viewModel: AlbumViewModel())
+        return vc
+    }
+    
+    func getLibaryViewController() -> UIViewController {
+        let vc = LibraryViewController()
+        return vc;
     }
 }

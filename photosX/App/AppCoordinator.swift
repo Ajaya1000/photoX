@@ -16,8 +16,11 @@ class AppCoordinator: BaseCoordinator {
     }
     
     override func start() {
-        showHome()
+        self.navigationController = BaseNavigationController()
         window.makeKeyAndVisible()
+        window.rootViewController = self.navigationController
+        
+        showHome()
     }
 }
 
@@ -26,10 +29,8 @@ private extension AppCoordinator {
         self.removeChildCoordinators()
         
         let homeCoordinator = AppDelegate.container.resolve(HomeCoordinator.self)!
-        homeCoordinator.navigationController = BaseNavigationController()
+        homeCoordinator.navigationController = self.navigationController
         
         self.start(coordinator: homeCoordinator)
-        
-        window.rootViewController = homeCoordinator.navigationController
     }
 }
