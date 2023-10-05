@@ -29,6 +29,18 @@ class AlbumsViewController: BaseViewController {
         
         addProfileViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
 }
 
 private extension AlbumsViewController {
@@ -45,18 +57,22 @@ private extension AlbumsViewController {
         
         container.translatesAutoresizingMaskIntoConstraints = false
         
-        viewModel.profiles.slices(of: 2).forEach { list in
+        viewModel.profiles.enumerated().map { index, item in
+            let view = getProfileView(with: item.name, image: item.image)
+            view.tag = index
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didSelectProfile(_:)))
+            view.addGestureRecognizer(tapGesture)
+            profileViews.append(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }.slices(of: 2).forEach { list in
             let subContainer = UIStackView()
             subContainer.axis = .horizontal
             subContainer.spacing = Constraints.horizontalSpacing
             subContainer.translatesAutoresizingMaskIntoConstraints = false
             
             list.forEach {
-                let view = getProfileView(with: $0.name, image: $0.image)
-                profileViews.append(view)
-                view.translatesAutoresizingMaskIntoConstraints = false
-                
-                subContainer.addArrangedSubview(view)
+                subContainer.addArrangedSubview($0)
             }
             
             container.addArrangedSubview(subContainer)
@@ -74,6 +90,47 @@ private extension AlbumsViewController {
         startAnimation()
     }
     
+}
+
+private extension AlbumsViewController {
+    @objc func didSelectProfile(_ sender: UITapGestureRecognizer) {
+        guard let view = sender.view else { return }
+        
+        startLoaderAnimation(for: view)
+    }
+}
+
+private extension AlbumsViewController {
+    func startLoaderAnimation(for view: UIView) {
+        view.removeFromSuperview()
+        
+        let outerLoaderContainer = UIStackView()
+        outerLoaderContainer.axis = .horizontal
+        outerLoaderContainer.alignment = .center
+        
+        
+        let loaderContainer = UIStackView()
+        loaderContainer.axis = .vertical
+        loaderContainer.alignment = .center
+        
+        
+        let loaderView = getLoaderView()
+        
+        loaderContainer.addArrangedSubview(view)
+        loaderContainer.addArrangedSubview(loaderView)
+        
+        view.addSubview(outerLoaderContainer)
+        
+        outerLoaderContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        outerLoaderContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        outerLoaderContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        outerLoaderContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        UIView.animate(withDuration: 1.0, delay: 0.0) {
+
+        }
+    }
+    
     func startAnimation() {
         profileViews.enumerated().forEach { index, view in
             UIView.animate(withDuration: 1.5,
@@ -86,9 +143,7 @@ private extension AlbumsViewController {
             }
         }
     }
-}
-
-private extension AlbumsViewController {
+    
     func getProfileView(with title: String, image: String) -> UIView {
         let containerView = UIStackView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,6 +177,10 @@ private extension AlbumsViewController {
         containerView.layer.opacity = 0.0
         
         return containerView
+    }
+    
+    func getLoaderView() -> UIView {
+        
     }
 }
 

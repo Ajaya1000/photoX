@@ -130,7 +130,6 @@
 				A58819102AC8042900D7D771 /* App */,
 				A58818FE2AC7F59300D7D771 /* Constants */,
 				A58818F02AC7F36900D7D771 /* Services */,
-				A58819032AC7F6C900D7D771 /* Repository */,
 				A518CEF92ACB411300EEC263 /* Models */,
 				A58819082AC7FF8700D7D771 /* DomainModels */,
 				A588190B2AC7FFF800D7D771 /* ViewModels */,
@@ -169,13 +168,6 @@
 				A58818FF2AC7F59D00D7D771 /* APIEndPoints.swift */,
 			);
 			path = Constants;
-			sourceTree = "<group>";
-		};
-		A58819032AC7F6C900D7D771 /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Repository;
 			sourceTree = "<group>";
 		};
 		A58819082AC7FF8700D7D771 /* DomainModels */ = {

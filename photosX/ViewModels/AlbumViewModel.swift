@@ -12,7 +12,5 @@ struct AlbumViewModel {
                                .init(name: "Biju", image: "avatarOlive"),
                                .init(name: "Rupali", image: "avatarYellow"),
                                .init(name: "Manish", image: "avatarGreen"),
-                               .init(name: "Kids", image: "avatarSloth"),
-                               .init(name: "Manish", image: "avatarGreen"),
                                .init(name: "Kids", image: "avatarSloth")]
 }

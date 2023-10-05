@@ -14,7 +14,11 @@ class HomeCoordinator: BaseCoordinator {
         
         let viewControllers = getViewControllers()
         viewController.setup(with: viewControllers)
-        self.navigationController.pushViewController(viewController, animated: false)
+        
+        
+        let vc = getGalleryViewController()
+        
+        self.navigationController.setViewControllers([viewController, vc], animated: false)
     }
 }
 
@@ -39,7 +43,7 @@ private extension HomeCoordinator {
     }
     
     func getTabItems() -> [HomeTabItem] {
-        return HomeTabItem.allCases
+        return [.library]
     }
 }
 
